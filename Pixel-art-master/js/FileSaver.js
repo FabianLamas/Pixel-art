@@ -59,7 +59,6 @@ var saveAs = saveAs || (function(view) {
 			if (!no_auto_bom) {
 				blob = auto_bom(blob);
 			}
-			// First try a.download, then web filesystem, then object URLs
 			var
 				  filesaver = this
 				, type = blob.type
@@ -68,16 +67,14 @@ var saveAs = saveAs || (function(view) {
 				, dispatch_all = function() {
 					dispatch(filesaver, "writestart progress write writeend".split(" "));
 				}
-				// on any filesys errors revert to saving with object URLs
 				, fs_error = function() {
 					if ((is_chrome_ios || (force && is_safari)) && view.FileReader) {
-						// Safari doesn't allow downloading of blob urls
 						var reader = new FileReader();
 						reader.onloadend = function() {
 							var url = is_chrome_ios ? reader.result : reader.result.replace(/^data:[^;]*;/, 'data:attachment/file;');
 							var popup = view.open(url, '_blank');
 							if(!popup) view.location.href = url;
-							url=undefined; // release reference before dispatching
+							url=undefined; 
 							filesaver.readyState = filesaver.DONE;
 							dispatch_all();
 						};
@@ -85,7 +82,6 @@ var saveAs = saveAs || (function(view) {
 						filesaver.readyState = filesaver.INIT;
 						return;
 					}
-					// don't create more object URLs than needed
 					if (!object_url) {
 						object_url = get_URL().createObjectURL(blob);
 					}

@@ -699,7 +699,7 @@ _html2canvas.Util.Font = (function () {
                 }
                 break;
               case 'closest-side':
-              case 'contain': // is equivalent to closest-side
+              case 'contain': 
                 if(m2[0] === 'circle'){
                   gradient.rx = gradient.ry = Math.min(
                     gradient.cx,
@@ -707,7 +707,7 @@ _html2canvas.Util.Font = (function () {
                     gradient.x1 - gradient.cx,
                     gradient.y1 - gradient.cy
                     );
-                } else { // ellipse
+                } else { 
 
                   gradient.type = m2[0];
 
@@ -724,7 +724,7 @@ _html2canvas.Util.Font = (function () {
             }
           }
 
-          // color stops
+          
           m2 = m1[5].match(/((?:rgb|rgba)\(\d{1,3},\s\d{1,3},\s\d{1,3}(?:,\s[0-9\.]+)?\)(?:\s\d{1,3}(?:%|px))?)+/g);
           if(m2){
             m2Len = m2.length;
@@ -735,7 +735,7 @@ _html2canvas.Util.Font = (function () {
                 stop = parseFloat(m3[2]);
                 if(m3[3] === '%'){
                   stop /= 100;
-                } else { // px - stupid opera
+                } else { 
                   stop /= bounds.width;
                 }
               } else {
@@ -979,7 +979,7 @@ function h2cRenderContext(width, height) {
 _html2canvas.Parse = function (images, options) {
   window.scroll(0,0);
 
-  var element = (( options.elements === undefined ) ? document.body : options.elements[0]), // select body by default
+  var element = (( options.elements === undefined ) ? document.body : options.elements[0]),  
   numDraws = 0,
   doc = element.ownerDocument,
   Util = _html2canvas.Util,
@@ -1015,7 +1015,7 @@ _html2canvas.Parse = function (images, options) {
 
   function getCSSInt(element, attribute) {
     var val = parseInt(getCSS(element, attribute), 10);
-    return (isNaN(val)) ? 0 : val; // borders in old IE are throwing 'medium' for demo.html
+    return (isNaN(val)) ? 0 : val; 
   }
 
   function renderRect (ctx, x, y, w, h, bgcolor) {
@@ -1291,13 +1291,6 @@ _html2canvas.Parse = function (images, options) {
     opacity = getCSS(element, 'opacity'),
     isFloated = getCSS(element, 'cssFloat') !== 'none';
 
-    // https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Understanding_z_index/The_stacking_context
-    // When a new stacking context should be created:
-    // the root element (HTML),
-    // positioned (absolutely or relatively) with a z-index value other than "auto",
-    // elements with an opacity value less than 1. (See the specification for opacity),
-    // on mobile WebKit and Chrome 22+, position: fixed always creates a new stacking context, even when z-index is "auto" (See this post)
-
     stack.zIndex = newContext = h2czContext(zIndex);
     newContext.isPositioned = isPositioned;
     newContext.isFloated = isFloated;
@@ -1319,14 +1312,14 @@ _html2canvas.Parse = function (images, options) {
     drawImage(
       ctx,
       image,
-      0, //sx
-      0, //sy
-      image.width, //sw
-      image.height, //sh
-      bounds.left + paddingLeft + borders[3].width, //dx
-      bounds.top + paddingTop + borders[0].width, // dy
-      bounds.width - (borders[1].width + borders[3].width + paddingLeft + paddingRight), //dw
-      bounds.height - (borders[0].width + borders[2].width + paddingTop + paddingBottom) //dh
+      0,
+      0, 
+      image.width, 
+      image.height, 
+      bounds.left + paddingLeft + borders[3].width, 
+      bounds.top + paddingTop + borders[0].width, 
+      bounds.width - (borders[1].width + borders[3].width + paddingLeft + paddingRight), 
+      bounds.height - (borders[0].width + borders[2].width + paddingTop + paddingBottom) 
       );
   }
 
@@ -1348,10 +1341,10 @@ _html2canvas.Parse = function (images, options) {
   var getCurvePoints = (function(kappa) {
 
     return function(x, y, r1, r2) {
-      var ox = (r1) * kappa, // control point offset horizontal
-      oy = (r2) * kappa, // control point offset vertical
-      xm = x + r1, // x-middle
-      ym = y + r2; // y-middle
+      var ox = (r1) * kappa, 
+      oy = (r2) * kappa, 
+      xm = x + r1, 
+      ym = y + r2;
       return {
         topLeft: bezierCurve({
           x:x,
@@ -1761,7 +1754,7 @@ _html2canvas.Parse = function (images, options) {
     elps.className = pseudoHide + "-before " + pseudoHide + "-after";
 
     Object.keys(elStyle).filter(indexedProperty).forEach(function(prop) {
-      // Prevent assigning of read only CSS Rules, ex. length, parentRule
+
       try {
         elps.style[prop] = elStyle[prop];
       } catch (e) {
@@ -1964,7 +1957,6 @@ _html2canvas.Parse = function (images, options) {
 
     setZ(element, stack, parentStack);
 
-    // TODO correct overflow for absolute content residing under a static position
     if (options.useOverflow === true && /(hidden|scroll|auto)/.test(getCSS(element, "overflow")) === true && /(BODY)/i.test(element.nodeName) === false){
       stack.clip = (stack.clip) ? clipBounds(stack.clip, bounds) : bounds;
     }
@@ -2115,7 +2107,7 @@ function h2czContext(zindex) {
 _html2canvas.Preload = function( options ) {
 
   var images = {
-    numLoaded: 0,   // also failed are counted here
+    numLoaded: 0,  
     numFailed: 0,
     numTotal: 0,
     cleanupDone: false
@@ -2127,7 +2119,7 @@ _html2canvas.Preload = function( options ) {
   count = 0,
   element = options.elements[0] || document.body,
   doc = element.ownerDocument,
-  domImages = element.getElementsByTagName('img'), // Fetch images of the present element only
+  domImages = element.getElementsByTagName('img'), 
   imgLen = domImages.length,
   link = doc.createElement("a"),
   supportCORS = (function( img ){
@@ -2294,7 +2286,7 @@ _html2canvas.Preload = function( options ) {
         // CORS failed
         window.clearTimeout( imageObj.timer );
 
-        // let's try with proxy instead
+         
         if ( options.proxy ) {
           var src = img.src;
           img = new Image();
@@ -2436,11 +2428,11 @@ _html2canvas.Renderer = function(parseQueue, options){
       var rootContext = {};
       function insert(context, node, specialParent) {
         var zi = (node.zIndex.zindex === 'auto') ? 0 : Number(node.zIndex.zindex),
-        contextForChildren = context, // the stacking context for children
+        contextForChildren = context, 
         isPositioned = node.zIndex.isPositioned,
         isFloated = node.zIndex.isFloated,
         stub = {node: node},
-        childrenDest = specialParent; // where children without z-index should be pushed into
+        childrenDest = specialParent;
 
         if (node.zIndex.ownStacking) {
           contextForChildren = stub.context = { '!': [{node:node, children: []}]};
